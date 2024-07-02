@@ -5,6 +5,8 @@ import rootRoute from "./routes/rootRoute";
 import logger from "./utils/logger";
 import { AppDataSource } from "./data-source";
 import authRoute from "./routes/authRoute";
+import protectedRoutes from "./routes/protectedRoutes";
+import journalEntryRoutes from "./routes/journalEntry.routes";
 dotenv.config();
 const app: Express = express();
 const port = process.env.PORT || 5001;
@@ -15,6 +17,8 @@ AppDataSource.initialize()
     setupSwagger(app);
     app.use("/", rootRoute);
     app.use("/auth", authRoute);
+    app.use("/api/journal-entries", journalEntryRoutes);
+    app.use("/api/protected", protectedRoutes);
     app.listen(port, () => {
       logger.info(`Server is running at http://localhost:${port}`);
     });

@@ -1,6 +1,7 @@
 import { login, register } from "../services/user.service";
 import { Router, Request, Response } from "express";
 const router = Router();
+
 /**
  * @swagger
  * /auth/register:

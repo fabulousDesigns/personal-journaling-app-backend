@@ -1,3 +1,4 @@
+// src/routes/swagger.ts
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import express, { Express } from "express";
@@ -16,6 +17,20 @@ const swaggerDefinition = {
       description: "Development server",
     },
   ],
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+      },
+    },
+  },
+  // security: [
+  //   {
+  //     bearerAuth: [],
+  //   },
+  // ],
 };
 
 const options = {
