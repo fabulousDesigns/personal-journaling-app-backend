@@ -5,7 +5,6 @@ import rootRoute from "./routes/rootRoute";
 import logger from "./utils/logger";
 import { AppDataSource } from "./data-source";
 import authRoute from "./routes/authRoute";
-import protectedRoutes from "./routes/protectedRoutes";
 import journalEntryRoutes from "./routes/journalEntry.routes";
 import dataSummaryRoutes from "./routes/dataSummaryRoutes";
 dotenv.config();
@@ -19,7 +18,6 @@ AppDataSource.initialize()
     app.use("/", rootRoute);
     app.use("/auth", authRoute);
     app.use("/api/journal-entries", journalEntryRoutes);
-    app.use("/api/protected", protectedRoutes);
     app.use("/api", dataSummaryRoutes);
     app.listen(port, () => {
       logger.info(`Server is running at http://localhost:${port}`);

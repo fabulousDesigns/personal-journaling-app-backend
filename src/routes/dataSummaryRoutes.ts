@@ -10,7 +10,7 @@ const router = Router();
  *   get:
  *     summary: Get summary data for a given period
  *     description: Fetch summary data for journal entries within the specified date range.
- *     tags: [Protected]
+ *     tags: [Summary]
  *     security:
  *       - bearerAuth: []
  *     parameters:
