@@ -57,6 +57,11 @@ const router = Router();
 router.post("/register", async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body;
+    if (!username || !email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Username, email, and password are required" });
+    }
     const user = await register(username, email, password);
     res.status(201).json({
       message: "User registered successfully",
@@ -68,7 +73,13 @@ router.post("/register", async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error("Registration error:", error);
-    res.status(500).json({ message: "An error occurred during registration" });
+    if (error instanceof Error && error.message === "Email already in use") {
+      res.status(409).json({ message: error.message });
+    } else {
+      res
+        .status(500)
+        .json({ message: "An error occurred during registration" });
+    }
   }
 });
 
@@ -129,6 +140,11 @@ router.post("/register", async (req: Request, res: Response) => {
 router.post("/login", async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
+    }
     const token = await login(email, password);
     res.status(200).json({ token });
   } catch (error) {
