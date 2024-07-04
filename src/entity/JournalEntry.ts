@@ -1,6 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+} from "typeorm";
 import { User } from "./User";
 import { Category } from "./Category";
+import { JournalImage } from "./JournalImage";
 
 @Entity("journal_entries")
 export class JournalEntry {
@@ -21,6 +28,9 @@ export class JournalEntry {
 
   @ManyToOne(() => Category, (category) => category.journalEntries)
   category: Category;
+
+  @OneToMany(() => JournalImage, (journalImage) => journalImage.journalEntry)
+  images!: JournalImage[];
 
   constructor(
     title: string,

@@ -15,7 +15,7 @@ import {
   eachMonthOfInterval,
 } from "date-fns";
 
-// Daily Summary
+//! -> Daily Summary
 export const getDailySummary = async (req: AuthRequest, res: Response) => {
   if (!req.user) return res.sendStatus(401); // Check if user is set
 
@@ -53,7 +53,7 @@ export const getDailySummary = async (req: AuthRequest, res: Response) => {
   });
 };
 
-// Weekly Summary
+//!-> Weekly Summary
 export const getWeeklySummary = async (req: AuthRequest, res: Response) => {
   if (!req.user) return res.sendStatus(401); // Check if user is set
 
@@ -91,7 +91,7 @@ export const getWeeklySummary = async (req: AuthRequest, res: Response) => {
   });
 };
 
-// Monthly Summary
+//!-> Monthly Summary
 export const getMonthlySummary = async (req: AuthRequest, res: Response) => {
   if (!req.user) return res.sendStatus(401); // Check if user is set
 

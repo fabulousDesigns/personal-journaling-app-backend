@@ -3,6 +3,7 @@ import { User } from "./entity/User";
 import { Category } from "./entity/Category";
 import { JournalEntry } from "./entity/JournalEntry";
 import { RefreshToken } from "./entity/RefreshToken";
+import { JournalImage } from "./entity/JournalImage";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -13,7 +14,7 @@ export const AppDataSource = new DataSource({
   database: "journal",
   synchronize: true,
   logging: false,
-  entities: [User, Category, JournalEntry, RefreshToken],
+  entities: [User, Category, JournalEntry, RefreshToken, JournalImage],
   migrations: ["src/migration/**/*.ts"],
   subscribers: ["src/subscriber/**/*.ts"],
 });

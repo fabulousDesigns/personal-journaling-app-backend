@@ -3,9 +3,12 @@
 import { Router, Request, Response } from "express";
 import { authMiddleware } from "../middleware/authMiddleware";
 import { JournalEntryService } from "../services/JournalEntryService";
+import multer from "multer";
 
 const router = Router();
 const journalEntryService = new JournalEntryService();
+const upload = multer({ dest: "uploads/" });
+
 /**
  * @swagger
  * /api/journal-entries:
@@ -17,7 +20,7 @@ const journalEntryService = new JournalEntryService();
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             required:
@@ -35,29 +38,44 @@ const journalEntryService = new JournalEntryService();
  *                 format: date
  *               categoryId:
  *                 type: number
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
  *     responses:
  *       201:
  *         description: Journal entry created successfully
  *       400:
  *         description: Invalid input
  */
-router.post("/", authMiddleware, async (req: Request, res: Response) => {
-  const { title, content, date, categoryId } = req.body;
-  const userId = (req as any).user.userId;
 
-  try {
-    const journalEntry = await journalEntryService.createJournalEntry({
-      title,
-      content,
-      date,
-      categoryId,
-      userId,
-    });
-    res.status(201).json(journalEntry);
-  } catch (error) {
-    res.status(500).json({ message: "Error creating journal entry", error });
+router.post(
+  "/",
+  authMiddleware,
+  upload.array("images"),
+  async (req: Request, res: Response) => {
+    const { title, content, date, categoryId } = req.body;
+    const userId = (req as any).user.userId;
+    const images = (req.files as Express.Multer.File[]).map(
+      (file) => file.path
+    );
+
+    try {
+      const journalEntry = await journalEntryService.createJournalEntry({
+        title,
+        content,
+        date,
+        categoryId,
+        userId,
+        images,
+      });
+      res.status(201).json(journalEntry);
+    } catch (error) {
+      res.status(500).json({ message: "Error creating journal entry", error });
+    }
   }
-});
+);
 /**
  * @swagger
  * /api/journal-entries:

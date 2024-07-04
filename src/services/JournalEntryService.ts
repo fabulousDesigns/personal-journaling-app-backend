@@ -2,11 +2,13 @@ import { AppDataSource } from "../data-source";
 import { JournalEntry } from "../entity/JournalEntry";
 import { Category } from "../entity/Category";
 import { User } from "../entity/User";
+import { JournalImage } from "@/entity/JournalImage";
 
 export class JournalEntryService {
   private journalEntryRepository = AppDataSource.getRepository(JournalEntry);
   private categoryRepository = AppDataSource.getRepository(Category);
   private userRepository = AppDataSource.getRepository(User);
+  private journalImageRepository = AppDataSource.getRepository(JournalImage);
 
   async createJournalEntry(data: {
     title: string;
@@ -14,8 +16,9 @@ export class JournalEntryService {
     date: string;
     categoryId: number;
     userId: number;
+    images?: string[]; // Make images optional
   }): Promise<JournalEntry> {
-    const { title, content, date, categoryId, userId } = data;
+    const { title, content, date, categoryId, userId, images } = data;
 
     const user = await this.userRepository.findOneBy({ id: userId });
     if (!user) {
@@ -37,7 +40,27 @@ export class JournalEntryService {
       category
     );
 
-    return this.journalEntryRepository.save(journalEntry);
+    const savedJournalEntry = await this.journalEntryRepository.save(
+      journalEntry
+    );
+
+    if (images && images.length > 0) {
+      for (const imageUrl of images) {
+        const journalImage = new JournalImage(imageUrl, savedJournalEntry);
+        await this.journalImageRepository.save(journalImage);
+      }
+    }
+
+    const result = await this.journalEntryRepository.findOne({
+      where: { id: savedJournalEntry.id },
+      relations: ["images"],
+    });
+
+    if (!result) {
+      throw new Error("Failed to fetch the created journal entry");
+    }
+
+    return result;
   }
 
   async getAllJournalEntries(userId: number): Promise<JournalEntry[]> {
