@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 const JWT_SECRET: string = process.env.JWT_SECRET || "secret";
 const ACCESS_TOKEN_EXPIRY = "15m";
 
-interface AuthRequest extends Request {
+export interface AuthRequest extends Request {
   user?: { userId: number };
 }
 

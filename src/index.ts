@@ -31,7 +31,7 @@ AppDataSource.initialize()
     app.use("/", rootRoute);
     app.use("/auth", authRoute);
     app.use("/api/journal-entries", journalEntryRoutes);
-    app.use("/api", dataSummaryRoutes);
+    app.use("/api/", dataSummaryRoutes);
     app.listen(port, () => {
       logger.info(`Server is running at http://localhost:${port}`);
     });

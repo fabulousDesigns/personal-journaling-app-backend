@@ -171,7 +171,59 @@ router.post("/login", async (req: Request, res: Response) => {
     res.status(500).json({ message: "An error occurred during login" });
   }
 });
-
+/**
+ * @swagger
+ * /refresh:
+ *   post:
+ *     summary: Refresh the JWT token
+ *     description: Generates a new JWT token using a refresh token.
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               refreshToken:
+ *                 type: string
+ *                 description: The refresh token used to generate a new JWT token.
+ *                 example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'
+ *     responses:
+ *       200:
+ *         description: Successfully generated a new JWT token.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: The new JWT token.
+ *                   example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'
+ *       400:
+ *         description: Invalid refresh token.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message indicating why the request failed.
+ *                   example: 'Invalid refresh token.'
+ *       500:
+ *         description: Server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message indicating why the request failed.
+ *                   example: 'Internal server error.'
+ */
 router.post("/refresh", async (req, res) => {
   const { refreshToken } = req.body;
   if (!refreshToken) {
@@ -183,11 +235,7 @@ router.post("/refresh", async (req, res) => {
     if (!user) {
       return res.status(403).json({ message: "Invalid refresh token" });
     }
-
-    // Delete the old refresh token
     await deleteRefreshToken(refreshToken);
-
-    // Generate new tokens
     const tokens = await generateTokens(user);
 
     res.json(tokens);
