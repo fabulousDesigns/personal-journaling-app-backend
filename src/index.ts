@@ -7,6 +7,7 @@ import { AppDataSource } from "./data-source";
 import authRoute from "./routes/authRoute";
 import journalEntryRoutes from "./routes/journalEntry.routes";
 import dataSummaryRoutes from "./routes/dataSummaryRoutes";
+
 dotenv.config();
 const app: Express = express();
 const port = process.env.PORT || 5001;
@@ -15,6 +16,18 @@ AppDataSource.initialize()
     logger.info("Data Source has been initialized!");
     app.use(express.json());
     setupSwagger(app);
+    app.use((req, res, next) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.setHeader(
+        "Access-Control-Allow-Methods",
+        "GET, POST, PUT, PATCH, DELETE"
+      );
+      res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Content-Type, Authorization"
+      );
+      next();
+    });
     app.use("/", rootRoute);
     app.use("/auth", authRoute);
     app.use("/api/journal-entries", journalEntryRoutes);

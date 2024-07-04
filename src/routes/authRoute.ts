@@ -1,5 +1,11 @@
 import { login, register } from "../services/user.service";
 import { Router, Request, Response } from "express";
+import { generateTokens } from "@/middleware/authMiddleware";
+import { comparePasswords, getUserByEmail } from "@/utils/auth.methods";
+import {
+  deleteRefreshToken,
+  verifyRefreshToken,
+} from "@/services/refreshTokenService";
 const router = Router();
 
 /**
@@ -146,18 +152,48 @@ router.post("/login", async (req: Request, res: Response) => {
         .status(400)
         .json({ message: "Email and password are required" });
     }
-    const token = await login(email, password);
-    res.status(200).json({ token });
+
+    const user = await getUserByEmail(email);
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    const isPasswordValid = await comparePasswords(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    const { accessToken, refreshToken } = await generateTokens(user);
+
+    res.status(200).json({ accessToken, refreshToken });
   } catch (error) {
     console.error("Login error:", error);
-    if (
-      error instanceof Error &&
-      error.message === "Invalid email or password"
-    ) {
-      res.status(401).json({ message: error.message });
-    } else {
-      res.status(500).json({ message: "An error occurred during login" });
+    res.status(500).json({ message: "An error occurred during login" });
+  }
+});
+
+router.post("/refresh", async (req, res) => {
+  const { refreshToken } = req.body;
+  if (!refreshToken) {
+    return res.status(400).json({ message: "Refresh token is required" });
+  }
+
+  try {
+    const user = await verifyRefreshToken(refreshToken);
+    if (!user) {
+      return res.status(403).json({ message: "Invalid refresh token" });
     }
+
+    // Delete the old refresh token
+    await deleteRefreshToken(refreshToken);
+
+    // Generate new tokens
+    const tokens = await generateTokens(user);
+
+    res.json(tokens);
+  } catch (error) {
+    console.error("Error refreshing token:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 

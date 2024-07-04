@@ -2,6 +2,7 @@ import { DataSource } from "typeorm";
 import { User } from "./entity/User";
 import { Category } from "./entity/Category";
 import { JournalEntry } from "./entity/JournalEntry";
+import { RefreshToken } from "./entity/RefreshToken";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -12,7 +13,7 @@ export const AppDataSource = new DataSource({
   database: "journal",
   synchronize: true,
   logging: false,
-  entities: [User, Category, JournalEntry],
+  entities: [User, Category, JournalEntry, RefreshToken],
   migrations: ["src/migration/**/*.ts"],
   subscribers: ["src/subscriber/**/*.ts"],
 });

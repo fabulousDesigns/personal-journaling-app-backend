@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { JournalEntry } from "./JournalEntry";
+import { RefreshToken } from "./RefreshToken";
 
 @Entity("users")
 export class User {
@@ -17,7 +18,8 @@ export class User {
 
   @OneToMany(() => JournalEntry, (journalEntry) => journalEntry.user)
   journalEntries!: JournalEntry[];
-
+  @OneToMany(() => RefreshToken, (refreshToken) => refreshToken.user)
+  refreshTokens!: RefreshToken[];
   constructor(username: string, password: string, email: string) {
     this.username = username;
     this.password = password;
