@@ -64,3 +64,30 @@ export const login = async (
     throw new Error("Failed to log in");
   }
 };
+
+// ! -> Get user details function
+export const getUserDetails = async (
+  userId: number
+): Promise<{
+  email: string;
+  username: string;
+  profilePhoto: string | null;
+}> => {
+  try {
+    const userRepository = AppDataSource.getRepository(User);
+    const user = await userRepository.findOne({ where: { id: userId } });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    return {
+      email: user.email,
+      username: user.username,
+      profilePhoto: user.profilePicture || null,
+    };
+  } catch (error) {
+    console.error("Error getting user details:", error);
+    throw new Error("Failed to get user details");
+  }
+};

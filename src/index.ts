@@ -7,6 +7,9 @@ import { AppDataSource } from "./data-source";
 import authRoute from "./routes/authRoute";
 import journalEntryRoutes from "./routes/journalEntry.routes";
 import dataSummaryRoutes from "./routes/dataSummaryRoutes";
+import categoryRoute from "./routes/categoryRoute";
+import profileRoutes from "./routes/profileRoutes";
+import path from "path";
 
 dotenv.config();
 const app: Express = express();
@@ -30,11 +33,14 @@ AppDataSource.initialize()
     });
     app.use("/", rootRoute);
     app.use("/auth", authRoute);
+    app.use("/api/categories", categoryRoute);
     app.use("/api/journal-entries", journalEntryRoutes);
     app.use("/api/", dataSummaryRoutes);
+    app.use("/api", profileRoutes);
     app.listen(port, () => {
       logger.info(`Server is running at http://localhost:${port}`);
     });
+    app.use("/uploads", express.static(path.join(__dirname, "uploads")));
   })
   .catch((err) => {
     logger.error("Error during Data Source initialization", err);

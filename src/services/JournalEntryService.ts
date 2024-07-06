@@ -16,7 +16,7 @@ export class JournalEntryService {
     date: string;
     categoryId: number;
     userId: number;
-    images?: string[]; // Make images optional
+    images?: string[];
   }): Promise<JournalEntry> {
     const { title, content, date, categoryId, userId, images } = data;
 

@@ -7,7 +7,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   username: string;
 
   @Column()
@@ -16,10 +16,15 @@ export class User {
   @Column({ unique: true })
   email: string;
 
+  @Column({ nullable: true })
+  profilePicture!: string;
+
   @OneToMany(() => JournalEntry, (journalEntry) => journalEntry.user)
   journalEntries!: JournalEntry[];
+
   @OneToMany(() => RefreshToken, (refreshToken) => refreshToken.user)
   refreshTokens!: RefreshToken[];
+
   constructor(username: string, password: string, email: string) {
     this.username = username;
     this.password = password;

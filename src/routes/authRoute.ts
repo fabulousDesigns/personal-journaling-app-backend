@@ -1,6 +1,10 @@
-import { login, register } from "../services/user.service";
+import { getUserDetails, login, register } from "../services/user.service";
 import { Router, Request, Response } from "express";
-import { generateTokens } from "@/middleware/authMiddleware";
+import {
+  AuthRequest,
+  authMiddleware,
+  generateTokens,
+} from "@/middleware/authMiddleware";
 import { comparePasswords, getUserByEmail } from "@/utils/auth.methods";
 import {
   deleteRefreshToken,
@@ -242,6 +246,56 @@ router.post("/refresh", async (req, res) => {
   } catch (error) {
     console.error("Error refreshing token:", error);
     res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+/**
+ * @swagger
+ * /auth/user:
+ *   get:
+ *     summary: Get user details
+ *     description: Retrieves the details of the authenticated user.
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User details retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 email:
+ *                   type: string
+ *                 username:
+ *                   type: string
+ *                 profilePhoto:
+ *                   type: string
+ *                   nullable: true
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/user", authMiddleware, async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user?.userId;
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const userDetails = await getUserDetails(userId);
+    res.json(userDetails);
+  } catch (error) {
+    console.error("Error getting user details:", error);
+    if (error instanceof Error && error.message === "User not found") {
+      res.status(404).json({ message: "User not found" });
+    } else {
+      res.status(500).json({ message: "Failed to get user details" });
+    }
   }
 });
 

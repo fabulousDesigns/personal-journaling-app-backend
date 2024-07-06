@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 export const createRefreshToken = async (user: User): Promise<string> => {
   const refreshTokenRepository = AppDataSource.getRepository(RefreshToken);
   const expiryDate = new Date();
-  expiryDate.setDate(expiryDate.getDate() + 7); // 7 days from now
+  expiryDate.setDate(expiryDate.getDate() + 7);
 
   const refreshToken = refreshTokenRepository.create({
     user,

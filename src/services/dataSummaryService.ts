@@ -17,7 +17,7 @@ import {
 
 //! -> Daily Summary
 export const getDailySummary = async (req: AuthRequest, res: Response) => {
-  if (!req.user) return res.sendStatus(401); // Check if user is set
+  if (!req.user) return res.sendStatus(401);
 
   const journalEntryRepository = AppDataSource.getRepository(JournalEntry);
   const today = new Date();
@@ -55,7 +55,7 @@ export const getDailySummary = async (req: AuthRequest, res: Response) => {
 
 //!-> Weekly Summary
 export const getWeeklySummary = async (req: AuthRequest, res: Response) => {
-  if (!req.user) return res.sendStatus(401); // Check if user is set
+  if (!req.user) return res.sendStatus(401);
 
   const journalEntryRepository = AppDataSource.getRepository(JournalEntry);
   const today = new Date();
@@ -93,7 +93,7 @@ export const getWeeklySummary = async (req: AuthRequest, res: Response) => {
 
 //!-> Monthly Summary
 export const getMonthlySummary = async (req: AuthRequest, res: Response) => {
-  if (!req.user) return res.sendStatus(401); // Check if user is set
+  if (!req.user) return res.sendStatus(401);
 
   const journalEntryRepository = AppDataSource.getRepository(JournalEntry);
   const today = new Date();
