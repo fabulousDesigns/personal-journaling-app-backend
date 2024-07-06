@@ -29,7 +29,9 @@ export class JournalEntry {
   @ManyToOne(() => Category, (category) => category.journalEntries)
   category: Category;
 
-  @OneToMany(() => JournalImage, (journalImage) => journalImage.journalEntry)
+  @OneToMany(() => JournalImage, (journalImage) => journalImage.journalEntry, {
+    cascade: true,
+  })
   images!: JournalImage[];
 
   constructor(

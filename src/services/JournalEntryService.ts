@@ -116,14 +116,21 @@ export class JournalEntryService {
   }
 
   async deleteJournalEntry(id: number, userId: number): Promise<void> {
-    const journalEntry = await this.journalEntryRepository.findOne({
-      where: { id, user: { id: userId } },
-    });
-
-    if (!journalEntry) {
-      throw new Error("Journal entry not found");
+    try {
+      const journalEntry = await this.journalEntryRepository.findOne({
+        where: { id, user: { id: userId } },
+        relations: ["images"],
+      });
+      if (!journalEntry) {
+        throw new Error("Journal entry not found");
+      }
+      if (journalEntry.images && journalEntry.images.length > 0) {
+        await this.journalImageRepository.remove(journalEntry.images);
+      }
+      await this.journalEntryRepository.remove(journalEntry);
+    } catch (error) {
+      console.error("Error deleting journal entry:", error);
+      throw new Error("Failed to delete journal entry. Please try again.");
     }
-
-    await this.journalEntryRepository.remove(journalEntry);
   }
 }
