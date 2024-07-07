@@ -10,7 +10,7 @@ const router = Router();
 
 /**
  * @swagger
- * /summary/daily:
+ * /api/summary/daily:
  *   get:
  *     summary: Get daily summary of journal entries
  *     tags: [Summary]
@@ -44,7 +44,7 @@ router.get("/summary/daily", authMiddleware, getDailySummary);
 
 /**
  * @swagger
- * /summary/weekly:
+ * /api/summary/weekly:
  *   get:
  *     summary: Get weekly summary of journal entries
  *     tags: [Summary]
@@ -78,7 +78,7 @@ router.get("/summary/weekly", authMiddleware, getWeeklySummary);
 
 /**
  * @swagger
- * /summary/monthly:
+ * /api/summary/monthly:
  *   get:
  *     summary: Get monthly summary of journal entries
  *     tags: [Summary]

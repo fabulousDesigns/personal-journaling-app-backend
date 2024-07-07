@@ -15,20 +15,22 @@ A backend service for a personal journaling app built with Node.js, Express, and
 - Node.js
 - Express
 - TypeScript
-- PostgreSQL/MySQL
-- Sequelize
+- MySQL
+- Typeorm
 
 ## Setup Instructions
 
 ### Prerequisites
 
 - Node.js
-- PostgreSQL/MySQL
+- MySQL
 
-### Installation
+### SetUp
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/fabulousDesigns/Journaling-App-API.git
-   cd Journaling-App-API
-   ```
+- Kindly refer to the `setup/` directory it has a video guide that will set you up...
+
+### Credits
+
+- Name: Maina Bernard Mburu
+- Email: designsfabulous8@gmail.com
+- Phone: +254110026199
