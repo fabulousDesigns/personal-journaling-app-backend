@@ -27,7 +27,7 @@ A backend service for a personal journaling app built with Node.js, Express, and
 
 ### SetUp
 
-- Kindly refer to the `setup/` directory it has a video guide that will set you up...
+- Kindly refer to this [video](https://drive.google.com/file/d/1Py_7PZUV9BiKcHpau8lYtIj-zgyOIKPE/view?usp=drive_link)
 
 ### Credits
 
