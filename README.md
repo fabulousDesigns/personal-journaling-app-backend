@@ -27,7 +27,11 @@ A backend service for a personal journaling app built with Node.js, Express, and
 
 ### SetUp
 
-- Kindly refer to this [video](https://drive.google.com/file/d/1Py_7PZUV9BiKcHpau8lYtIj-zgyOIKPE/view?usp=drive_link)  use earphones/headphones for a better experience
+- Kindly refer to this [video](https://drive.google.com/file/d/1P03I-B0SCV1Y1E8pprTchde4fOGaOQr5/view?usp=drive_link)
+
+### Migration Command
+
+- npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d src/data-source.ts
 
 ### Credits
 
